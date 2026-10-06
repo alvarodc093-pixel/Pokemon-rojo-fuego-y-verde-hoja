@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pokémon Rojo Fuego y Verde Hoja — Guía de ediciones Switch 2 | Exclusivos</title>
+  <meta name="description" content="Guía en español de Pokémon Rojo Fuego y Verde Hoja (Switch 2): qué Pokémon son exclusivos de cada edición, buscador con datos en vivo de PokéAPI, guía en vídeo y recursos oficiales." />
+  <meta name="theme-color" content="#0f172a" />
+  <meta property="og:title" content="Pokémon Rojo Fuego y Verde Hoja — Guía de ediciones" />
+  <meta property="og:description" content="Mitad roja, mitad verde: consulta los Pokémon exclusivos de cada edición, filtra, guarda favoritos y aprende con vídeos." />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%23ee1c25'/%3E%3Cpath d='M4 50a46 46 0 0 0 92 0z' fill='%23fff' transform='rotate(180 50 50)'/%3E%3Crect x='4' y='45' width='92' height='10' fill='%23111'/%3E%3Ccircle cx='50' cy='50' r='14' fill='%23fff' stroke='%23111' stroke-width='6'/%3E%3Ccircle cx='50' cy='50' r='6' fill='%23fff' stroke='%23111' stroke-width='3'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://pokeapi.co" crossorigin />
+  <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin />
+  <link rel="preconnect" href="https://upload.wikimedia.org" crossorigin />
+  <link rel="stylesheet" href="src/styles/main.css" />
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido principal</a>
+
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a class="brand" href="#portada" aria-label="Inicio — Guía Rojo Fuego y Verde Hoja">
+        <span class="brand-ball" aria-hidden="true"><span class="brand-ball-btn"></span></span>
+        <span class="brand-text">Guía <strong>Rojo Fuego</strong> · <strong>Verde Hoja</strong></span>
+      </a>
+      <nav class="site-nav" aria-label="Navegación principal">
+        <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Abrir menú">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <ul class="nav-menu" id="navMenu">
+          <li><a href="#portada">Portada</a></li>
+          <li><a href="#pokedex" data-tab="pokedex">Pokédex</a></li>
+          <li><a href="#ediciones" data-tab="ediciones">Ediciones</a></li>
+          <li><a href="#mapa" data-tab="mapa">Mapa</a></li>
+          <li><a href="#guia" data-tab="guia">Guía en vídeo</a></li>
+          <li><a href="#recursos" data-tab="recursos">Recursos</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <!-- ============ PORTADA: pokéball + logo + split ============ -->
+    <section class="hero" id="portada" aria-labelledby="hero-title">
+      <div class="hero-split" aria-hidden="true">
+        <div class="hero-half hero-half--fire"></div>
+        <div class="hero-half hero-half--leaf"></div>
+      </div>
+
+      <div class="container hero-content">
+        <div class="pokeball" role="img" aria-label="Pokébola clásica roja y blanca">
+          <span class="pokeball-shine" aria-hidden="true"></span>
+          <span class="pokeball-band" aria-hidden="true"></span>
+          <span class="pokeball-button" aria-hidden="true"></span>
+        </div>
+
+        <img
+          class="pokemon-logo"
+          src="https://upload.wikimedia.org/wikipedia/commons/9/98/International_Pok%C3%A9mon_logo.svg"
+          alt="Logotipo oficial de Pokémon"
+          width="420" height="153" fetchpriority="high"
+          onerror="this.outerHTML='<p class=&quot;pokemon-logo-fallback&quot;>Pokémon</p>'" />
+
+        <h1 id="hero-title" class="hero-title">
+          <span class="hero-title-fire">Rojo Fuego</span>
+          <span class="hero-title-x">y</span>
+          <span class="hero-title-leaf">Verde Hoja</span>
+        </h1>
+        <p class="hero-subtitle">
+          Guía de las ediciones de <strong>Switch&nbsp;2</strong>: consulta qué Pokémon son
+          <strong>exclusivos de cada edición</strong>, filtra por tipo, guarda favoritos y aprende con vídeos.
+        </p>
+        <p class="hero-source">
+          Datos en vivo de <a href="https://pokeapi.co" target="_blank" rel="noopener">PokéAPI</a>
+          · Lista verificada con <a href="https://rankedboost.com/pokemon/hypno/firered-leafgreen/#locations" target="_blank" rel="noopener">RankedBoost FRLG</a>
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn btn--fire" href="#panel-fire" data-tab="ediciones" data-scroll="#panel-fire">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+            Ver exclusivos Rojo
+          </a>
+          <a class="btn btn--leaf" href="#panel-leaf" data-tab="ediciones" data-scroll="#panel-leaf">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2.2.2 5.6-1.7 8.5A7 7 0 0 1 11 20z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+            Ver exclusivos Verde
+          </a>
+          <a class="btn btn--ghost" href="#guia" data-tab="guia">Ir a la guía en vídeo</a>
+        </div>
+
+        <dl class="hero-stats" aria-label="Resumen de contenido">
+          <div><dt id="statFire">22</dt><dd>exclusivos Rojo Fuego</dd></div>
+          <div><dt id="statLeaf">23</dt><dd>exclusivos Verde Hoja</dd></div>
+          <div><dt>45</dt><dd>en total para intercambiar</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <div class="tabs-bar" id="tabsBar">
+      <div class="container">
+        <div class="tabs" role="tablist" aria-label="Secciones de la guía">
+          <button class="tab" role="tab" id="tab-pokedex" data-tab="pokedex" aria-selected="true" aria-controls="panel-pokedex">Pokédex</button>
+          <button class="tab" role="tab" id="tab-ediciones" data-tab="ediciones" aria-selected="false" aria-controls="panel-ediciones" tabindex="-1">Ediciones</button>
+          <button class="tab" role="tab" id="tab-mapa" data-tab="mapa" aria-selected="false" aria-controls="panel-mapa" tabindex="-1">Mapa</button>
+          <button class="tab" role="tab" id="tab-guia" data-tab="guia" aria-selected="false" aria-controls="panel-guia" tabindex="-1">Guía en vídeo</button>
+          <button class="tab" role="tab" id="tab-recursos" data-tab="recursos" aria-selected="false" aria-controls="panel-recursos" tabindex="-1">Recursos</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ POKÉDEX ============ -->
+    <section class="section tabpanel" id="panel-pokedex" data-panel="pokedex" role="tabpanel" aria-labelledby="tab-pokedex" tabindex="0">
+      <div class="container">
+        <p class="kicker">Kanto + Johto · 251 Pokémon</p>
+        <h2 id="pokedex-title">Pokédex</h2>
+        <p class="section-lead">Toca un Pokémon para ver su ficha completa: imagen, ubicación y probabilidad de captura, evoluciones con sus niveles y todos sus ataques por nivel y por MT/MO.</p>
+        <form class="dex-toolbar" id="dexFilterForm" role="search" aria-label="Buscar en la Pokédex" onsubmit="return false">
+          <div class="dex-field">
+            <label for="dexQ">Buscar</label>
+            <input id="dexQ" name="dexQ" type="search" placeholder="Nombre o número… (ej.: pikachu, 025)" autocomplete="off" />
+          </div>
+          <div class="dex-field">
+            <label for="dexGen">Región</label>
+            <select id="dexGen" name="dexGen">
+              <option value="all">Kanto + Johto</option>
+              <option value="kanto">Solo Kanto (1–151)</option>
+              <option value="johto">Solo Johto (152–251)</option>
+            </select>
+          </div>
+        </form>
+        <p class="dex-count" id="dexCount" role="status" aria-live="polite">251 Pokémon</p>
+        <div class="dex-layout">
+          <div class="dex-list-wrap">
+            <ol class="dex-list" id="dexList" aria-label="Lista de Pokémon exclusivos"></ol>
+          </div>
+          <article class="dex-detail" id="dexDetail" aria-live="polite" aria-label="Ficha del Pokémon seleccionado">
+            <p>Cargando la Pokédex…</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ EDICIONES ============ -->
+    <section class="section tabpanel" id="panel-ediciones" data-panel="ediciones" role="tabpanel" aria-labelledby="tab-ediciones" tabindex="0" hidden>
+      <div class="container">
+        <h2 id="explorador-title" class="sr-only">Pokémon exclusivos de cada edición</h2>
+        <!-- ============ SPLIT ROJO / VERDE ============ -->
+        <div class="split">
+          <!-- Panel ROJO FUEGO -->
+          <section class="panel panel--fire" id="panel-fire" aria-labelledby="fire-title">
+            <header class="panel-head">
+              <h2 id="fire-title" class="panel-title sr-only">Exclusivos de Rojo Fuego</h2>
+              <div class="game-logo game-logo--fire" role="img" aria-label="Logotipo de la edición Rojo Fuego">
+                <span class="game-logo-flame" aria-hidden="true">
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+                </span>
+                <span class="game-logo-text"><small>Pokémon edición</small><strong>ROJO FUEGO</strong></span>
+                <span class="game-logo-mascot" aria-hidden="true">🔥 Charizard</span>
+              </div>
+              <p class="panel-desc">Solo aparecen en <strong>Rojo Fuego</strong>. Para completarlos necesitarás intercambiar con Verde Hoja.</p>
+              <p class="strip-caption">Recortes de tu imagen — mitad superior, pegados en su edición. Toca uno para ver su ficha:</p>
+              <div class="cutout-strip" id="strip-fire" role="group" aria-label="Recortes de exclusivos de Rojo Fuego"></div>
+            </header>
+            <div class="panel-status" data-panel-status="fire" role="status" aria-live="polite"></div>
+            <ul class="card-grid" id="grid-fire" aria-label="Pokémon exclusivos de Rojo Fuego"></ul>
+          </section>
+
+          <!-- Panel VERDE HOJA -->
+          <section class="panel panel--leaf" id="panel-leaf" aria-labelledby="leaf-title">
+            <header class="panel-head">
+              <h2 id="leaf-title" class="panel-title sr-only">Exclusivos de Verde Hoja</h2>
+              <div class="game-logo game-logo--leaf" role="img" aria-label="Logotipo de la edición Verde Hoja">
+                <span class="game-logo-flame" aria-hidden="true">
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2.2.2 5.6-1.7 8.5A7 7 0 0 1 11 20z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+                </span>
+                <span class="game-logo-text"><small>Pokémon edición</small><strong>VERDE HOJA</strong></span>
+                <span class="game-logo-mascot" aria-hidden="true">🍃 Venusaur</span>
+              </div>
+              <p class="panel-desc">Solo aparecen en <strong>Verde Hoja</strong>. Para completarlos necesitarás intercambiar con Rojo Fuego.</p>
+              <p class="strip-caption">Recortes de tu imagen — mitad inferior, pegados en su edición. Toca uno para ver su ficha:</p>
+              <div class="cutout-strip" id="strip-leaf" role="group" aria-label="Recortes de exclusivos de Verde Hoja"></div>
+            </header>
+            <div class="panel-status" data-panel-status="leaf" role="status" aria-live="polite"></div>
+            <ul class="card-grid" id="grid-leaf" aria-label="Pokémon exclusivos de Verde Hoja"></ul>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ MAPA ============ -->
+    <section class="section section--alt tabpanel" id="panel-mapa" data-panel="mapa" role="tabpanel" aria-labelledby="tab-mapa" tabindex="0" hidden>
+      <div class="container">
+        <p class="kicker">Explora Kanto</p>
+        <h2 id="mapa-title">Mapa interactivo de Kanto y las Archi7</h2>
+        <p class="section-lead">El FRLG Map de RankedBoost, incrustado en la página: mueve, amplía y localiza rutas, cuevas y puntos de captura sin salir de aquí.</p>
+        <div class="map-frame">
+          <iframe id="frlgMap" src="https://rankedboost.com/pokemon/location/firered-leafgreen/#megamap=4048,-960,0.085,region,-" title="Mapa interactivo de Pokémon Rojo Fuego y Verde Hoja (RankedBoost)" loading="lazy" allowfullscreen referrerpolicy="no-referrer"></iframe>
+        </div>
+        <p class="map-fallback">¿No se carga el mapa? <a href="https://rankedboost.com/pokemon/location/firered-leafgreen/" target="_blank" rel="noopener">Abrirlo en RankedBoost</a>.</p>
+      </div>
+    </section>
+
+    <!-- ============ GUÍA EN VÍDEO ============ -->
+    <section class="section section--alt tabpanel" id="panel-guia" data-panel="guia" role="tabpanel" aria-labelledby="tab-guia" tabindex="0" hidden>
+      <div class="container">
+        <p class="kicker">Aprende jugando</p>
+        <h2 id="guia-title">Guía en vídeo: serie completa + trucos</h2>
+        <p class="section-lead">36 capítulos paso a paso por Kanto y las Archi7, más shorts con trucos. Elige un vídeo de la lista y se reproduce aquí mismo, sin salir de la página.</p>
+        <div class="player-layout">
+          <div class="player-main">
+            <div class="player-frame">
+              <iframe id="ytPlayer" src="https://www.youtube-nocookie.com/embed/GYlCV2q-iWk?rel=0" title="Reproductor: guía en vídeo de Rojo Fuego y Verde Hoja" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <h3 class="now-playing" id="nowPlaying">1 · Pokémon Rojo Fuego #1 - Bulbasaur, Charmander o Squirtle</h3>
+            <p class="player-alt"><a id="watchLink" href="https://www.youtube.com/watch?v=GYlCV2q-iWk&list=PLMa4xzilcmBt-tBff6_m3KsLrLWPwA_6X" target="_blank" rel="noopener">Ver este vídeo en YouTube ↗</a></p>
+          </div>
+          <div class="playlist-wrap">
+            <h3 class="playlist-title">Serie completa <span id="epCount"></span></h3>
+            <ol class="playlist" id="playlistEps"></ol>
+            <h3 class="playlist-title">Shorts y trucos <span id="shortCount"></span></h3>
+            <ol class="playlist" id="playlistShorts"></ol>
+          </div>
+        </div>
+        <p class="map-fallback">Lista original: <a href="https://www.youtube.com/watch?v=GYlCV2q-iWk&list=PLMa4xzilcmBt-tBff6_m3KsLrLWPwA_6X" target="_blank" rel="noopener">ver la playlist en YouTube</a>.</p>
+      </div>
+    </section>
+
+    <!-- ============ RECURSOS ============ -->
+    <section class="section tabpanel" id="panel-recursos" data-panel="recursos" role="tabpanel" aria-labelledby="tab-recursos" tabindex="0" hidden>
+      <div class="container">
+        <p class="kicker">Para seguir investigando</p>
+        <h2 id="recursos-title">Páginas relacionadas</h2>
+        <ul class="link-grid">
+          <li><a class="link-card" href="https://rankedboost.com/pokemon/hypno/firered-leafgreen/#locations" target="_blank" rel="noopener"><strong>RankedBoost — Localizaciones FRLG</strong><span>Fuente de localizaciones usada en esta guía.</span></a></li>
+          <li><a class="link-card" href="https://pokeapi.co" target="_blank" rel="noopener"><strong>PokéAPI — API REST</strong><span>Sprites, tipos y estadísticas en vivo.</span></a></li>
+          <li><a class="link-card" href="https://bulbapedia.bulbagarden.net/wiki/Walkthrough:Pok%C3%A9mon_FireRed_and_LeafGreen" target="_blank" rel="noopener"><strong>Bulbapedia — Walkthrough FRLG</strong><span>Guía escrita paso a paso.</span></a></li>
+          <li><a class="link-card" href="https://www.serebii.net/fireredleafgreen/" target="_blank" rel="noopener"><strong>Serebii — FireRed / LeafGreen</strong><span>Pokédex, objetos y eventos.</span></a></li>
+          <li><a class="link-card" href="https://www.nintendo.com/" target="_blank" rel="noopener"><strong>Nintendo eShop</strong><span>Versiones digitales para Switch / Switch 2.</span></a></li>
+          <li><a class="link-card" href="https://home.pokemon.com/" target="_blank" rel="noopener"><strong>Pokémon HOME</strong><span>Transfiere tus capturas desde FRLG (oct. 2026).</span></a></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p><strong>Guía no oficial de fans.</strong> Pokémon © Nintendo / Game Freak / Creatures Inc. Sprites y datos vía <a href="https://pokeapi.co" target="_blank" rel="noopener">PokéAPI</a>.</p>
+      <p><a href="#portada">Volver arriba ↑</a> · Hecha con HTML + CSS + JS modular, sin frameworks.</p>
+    </div>
+  </footer>
+
+  <!-- Modal detalle -->
+  <div class="modal-backdrop" id="modalBackdrop" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalName" id="modal">
+      <button class="modal-close" id="modalClose" aria-label="Cerrar detalle">✕</button>
+      <div class="modal-body" id="modalBody">
+        <p>Cargando…</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="src/js/data.js"></script>
+  <script src="src/js/api.js"></script>
+  <script src="src/js/ui.js"></script>
+  <script src="src/js/playlist.js"></script>
+  <script src="src/js/app.js"></script>
+</body>
+</html>
