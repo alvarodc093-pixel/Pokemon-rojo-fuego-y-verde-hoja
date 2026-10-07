@@ -185,7 +185,7 @@ function dexListHTML(list, selectedId, caught) {
       const name = displayName(p.slug);
       return `<li class="dex-cell${got ? " is-caught" : ""}"><button class="dex-card${cur ? " is-current" : ""}" data-dex="${p.id}"
         ${cur ? 'aria-current="true"' : ""} aria-label="Ver ficha de ${name}${got ? " (capturado)" : ""}">
-        <img src="${artworkUrl(p.id)}" alt="" loading="lazy" decoding="async" width="76" height="76" />
+        <img src="${artworkUrl(p.id)}" alt="" loading="lazy" decoding="async" width="88" height="88" />
         <span class="dex-card-num">${dex(p.id)}</span>
         <span class="dex-card-name">${name}${ed ? ` <span class="dex-item-ed">${ed}</span>` : ""}</span>
         <span class="dex-card-types">${typeChips(p.types)}</span>
@@ -210,7 +210,7 @@ function dexDetailHTML(p, evoTree, moves, locSection) {
     : p.edition === "leaf" ? "🍃 Verde Hoja (exclusivo)" : region;
   return `
     <header class="dex-head">
-      <img src="${artworkUrl(p.id)}" alt="Arte oficial de ${displayName(p.slug)}" width="96" height="96" />
+      <img src="${artworkUrl(p.id)}" alt="Arte oficial de ${displayName(p.slug)}" width="140" height="140" />
       <div>
         <p class="poke-dex" style="margin:0">${dex(p.id)} · ${edLabel}</p>
         <h3 class="dex-name">${displayName(p.slug)}</h3>
