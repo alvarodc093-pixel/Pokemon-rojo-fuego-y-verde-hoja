@@ -208,13 +208,13 @@ a:hover { text-decoration-thickness: 2px; }
 }
 .dex-field input:focus, .dex-field select:focus { border-color: var(--color-accent-ink); outline: 3px solid rgb(42 74 155 / 0.25); }
 .dex-count { color: var(--color-muted); font-size: 0.95rem; margin: 10px 2px 0; }
-/* Layout sin scroll interno: la lista ocupa todo el ancho y la ficha es estrecha y fija.
-   Así los 251 se ven de un vistazo en una cuadrícula compacta, sin caja con scroll. */
+/* Layout: lista de 3 columnas a la izquierda y ficha amplia a la derecha.
+   Bulba, Ivi, Venu en la primera fila, Char... en la siguiente, y así. */
 .dex-layout { display: grid; gap: var(--spacing-md); margin-top: var(--spacing-md); align-items: start; grid-template-columns: minmax(0, 1fr); }
 .dex-list-wrap { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 12px; box-shadow: var(--shadow-sm); min-width: 0; }
-.dex-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); max-height: none; overflow: visible; }
-.dex-card { display: grid; justify-items: center; gap: 1px; width: 100%; font: inherit; background: #fff; border: 2px solid var(--color-border); border-radius: 10px; padding: 8px 6px 9px; cursor: pointer; transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease; position: relative; }
-.dex-card img { width: 72px; height: 72px; object-fit: contain; transition: transform 0.15s ease; }
+.dex-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; grid-template-columns: repeat(3, 1fr); max-height: none; overflow: visible; }
+.dex-card { display: grid; justify-items: center; gap: 2px; width: 100%; font: inherit; background: #fff; border: 2px solid var(--color-border); border-radius: 10px; padding: 10px 8px 11px; cursor: pointer; transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease; position: relative; }
+.dex-card img { width: 84px; height: 84px; object-fit: contain; transition: transform 0.15s ease; }
 .dex-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: var(--color-accent-ink); }
 .dex-card:hover img { transform: scale(1.07); }
 .dex-card.is-current { border-color: var(--color-fire); box-shadow: var(--shadow-md); }
@@ -276,14 +276,14 @@ a:hover { text-decoration-thickness: 2px; }
   .dex-ball.catching, .poke-ball.catching, .dex-ball.just-caught, .poke-ball.just-caught { animation: none; }
   .dex-ball.catching .ball-flash, .poke-ball.catching .ball-flash { animation: none; opacity: 0; }
 }
-.dex-card-num { font-size: 0.7rem; font-weight: 800; color: var(--color-muted); letter-spacing: 1px; }
-.dex-card-name { font-weight: 800; font-size: 0.8rem; text-transform: capitalize; text-align: center; line-height: 1.2; min-height: 2.2em; display: flex; align-items: center; justify-content: center; }
-.dex-card-types { display: flex; gap: 3px; flex-wrap: wrap; justify-content: center; }
-.dex-card-types .type-chip { font-size: 0.6rem; padding: 1px 7px; }
-.dex-detail { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--spacing-md); box-shadow: var(--shadow-sm); min-width: 0; }
-.dex-head { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
-.dex-head img { width: 110px; height: 110px; object-fit: contain; background: #f1f5f9; border-radius: var(--radius-md); }
-.dex-name { margin: 2px 0 6px; font-size: 1.35rem; text-transform: capitalize; }
+.dex-card-num { font-size: 0.72rem; font-weight: 800; color: var(--color-muted); letter-spacing: 1px; }
+.dex-card-name { font-weight: 800; font-size: 0.88rem; text-transform: capitalize; text-align: center; line-height: 1.2; min-height: 2.2em; display: flex; align-items: center; justify-content: center; }
+.dex-card-types { display: flex; gap: 4px; flex-wrap: wrap; justify-content: center; }
+.dex-card-types .type-chip { font-size: 0.62rem; padding: 2px 8px; }
+.dex-detail { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--spacing-lg); box-shadow: var(--shadow-sm); min-width: 0; }
+.dex-head { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.dex-head img { width: 140px; height: 140px; object-fit: contain; background: #f1f5f9; border-radius: var(--radius-md); }
+.dex-name { margin: 2px 0 6px; font-size: 1.6rem; text-transform: capitalize; }
 .dex-sub { margin: 18px 0 8px; font-size: 1.1rem; }
 .evo-tree { display: flex; flex-wrap: wrap; gap: 10px; align-items: stretch; }
 .evo-node { display: grid; justify-items: center; gap: 2px; background: #f8fafc; border: 1.5px solid var(--color-border); border-radius: var(--radius-md); padding: 10px 14px; min-width: 110px; }
@@ -492,7 +492,7 @@ a:hover { text-decoration-thickness: 2px; }
   .nav-menu a:hover { background: rgb(255 255 255 / 0.12); color: #fff; }
   .link-grid { grid-template-columns: repeat(2, 1fr); }
   .dex-toolbar { grid-template-columns: 2fr 1fr; align-items: end; }
-  .dex-list { grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); }
+  .dex-list { grid-template-columns: repeat(3, 1fr); }
   .pokeball { width: 150px; height: 150px; }
   .pokeball-button { width: 36px; height: 36px; }
 }
@@ -500,20 +500,20 @@ a:hover { text-decoration-thickness: 2px; }
   .split { grid-template-columns: 1fr 1fr; align-items: start; }
   .player-layout { grid-template-columns: 1.6fr 1fr; }
   .playlist { max-height: 480px; }
-  /* Tres zonas: la lista aprovecha el largo y la ficha queda corta y fija a la derecha */
-  .dex-layout { grid-template-columns: minmax(0, 1fr) 300px; }
-  .dex-list { grid-template-columns: repeat(auto-fill, minmax(108px, 1fr)); }
-  .dex-card img { width: 76px; height: 76px; }
-  .dex-detail { position: sticky; top: 64px; max-height: calc(100vh - 80px); overflow: auto; padding: 16px; }
-  .dex-head img { width: 96px; height: 96px; }
-  .dex-name { font-size: 1.25rem; }
+  /* Lista de 3 en 3 a la izquierda, ficha amplia a la derecha con el hueco sobrante */
+  .dex-layout { grid-template-columns: 390px minmax(0, 1fr); gap: var(--spacing-lg); }
+  .dex-list { grid-template-columns: repeat(3, 1fr); }
+  .dex-card img { width: 88px; height: 88px; }
+  .dex-detail { position: sticky; top: 64px; max-height: calc(100vh - 80px); overflow: auto; padding: var(--spacing-lg); }
+  .dex-head img { width: 140px; height: 140px; }
+  .dex-name { font-size: 1.6rem; }
   .poke-media img { width: 80px; height: 80px; }
   .link-grid { grid-template-columns: repeat(3, 1fr); }
   .cutout-btn img { width: 54px; height: 54px; }
 }
 @media (min-width: 1400px) {
-  .dex-layout { grid-template-columns: minmax(0, 1fr) 320px; }
-  .dex-list { grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); }
+  .dex-layout { grid-template-columns: 420px minmax(0, 1fr); }
+  .dex-list { grid-template-columns: repeat(3, 1fr); }
 }
 @media (max-width: 639px) {
   .hero-split { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
