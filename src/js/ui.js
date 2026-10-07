@@ -39,24 +39,36 @@ function skeletonGrid(ul, n = 6) {
   ul.innerHTML = Array.from({ length: n }, () => `<li class="skeleton" aria-hidden="true"></li>`).join("");
 }
 
-function cardHTML(p, isFav) {
+function ballInnerHTML() {
+  return `<span class="ball-half ball-half--top" aria-hidden="true"></span>
+    <span class="ball-half ball-half--bottom" aria-hidden="true"></span>
+    <span class="ball-center" aria-hidden="true"><span aria-hidden="true"></span></span>
+    <span class="ball-flash" aria-hidden="true"></span>`;
+}
+
+function cardHTML(p, isCaught) {
   const img = p.sprite || artworkUrl(p.id);
+  const name = cap(p.name || p.slug);
+  const caught = !!isCaught;
   return `
     <li>
-      <article class="poke-card" data-id="${p.id}">
+      <article class="poke-card${caught ? " is-caught" : ""}" data-id="${p.id}">
         <div class="poke-media">
-          <img src="${img}" alt="Arte oficial de ${cap(p.name || p.slug)}" width="110" height="110"
+          <img src="${img}" alt="Arte oficial de ${name}" width="80" height="80"
                loading="lazy" decoding="async"
                onerror="this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${p.id}.png'" />
+          <button class="poke-ball${caught ? " is-caught" : ""}" data-caught="${p.id}"
+            aria-pressed="${caught ? "true" : "false"}"
+            aria-label="Marcar a ${name} como capturado"
+            title="${caught ? "¡Capturado! Toca para liberar" : "Marcar como capturado"}">${ballInnerHTML()}</button>
+          ${caught ? `<span class="caught-ribbon">✓ Capturado</span>` : ""}
         </div>
         <div class="poke-body">
           <span class="poke-dex">${dex(p.id)} · ${p.edition === "fire" ? "Rojo Fuego" : "Verde Hoja"}</span>
-          <h3 class="poke-name">${cap(p.name || p.slug)}</h3>
+          <h3 class="poke-name">${name}</h3>
           <div class="poke-types">${typeChips(p.types)}</div>
           <div class="poke-actions">
-            <button class="btn btn--dark btn--icon" data-action="detail" data-id="${p.id}" aria-label="Ver detalle de ${cap(p.name || p.slug)}">Detalle</button>
-            <button class="btn btn--subtle btn--icon fav-btn" data-action="fav" data-id="${p.id}"
-              aria-pressed="${isFav ? "true" : "false"}" aria-label="Marcar ${cap(p.name || p.slug)} como favorito">★ ${isFav ? "Fav" : "Guardar"}</button>
+            <button class="btn btn--dark btn--icon" data-action="detail" data-id="${p.id}" aria-label="Ver detalle de ${name}">Detalle</button>
           </div>
         </div>
       </article>
@@ -74,6 +86,7 @@ function toast(msg) {
 
 function modalHTML(p, edition) {
   const img = p.sprite || artworkUrl(p.id);
+  const caught = getCaught().has(p.id);
   const stats = (p.stats || [])
     .map(
       (s) => `
@@ -104,7 +117,8 @@ function modalHTML(p, edition) {
     ${stats || "<p>Sin datos de estadísticas.</p>"}
     <div class="modal-actions">
       <a class="btn btn--dark" target="_blank" rel="noopener" href="https://www.pokemon.com/es/pokedex/${p.name}">Ficha en Pokémon.com</a>
-      <button class="btn btn--subtle" data-action="fav" data-id="${p.id}">★ Guardar favorito</button>
+      <button class="btn btn--subtle catch-btn" data-action="caught" data-id="${p.id}"
+        aria-pressed="${caught ? "true" : "false"}"><span class="mini-ball" aria-hidden="true"></span>${caught ? "¡Capturado! ✓" : "Marcar capturado"}</button>
     </div>`;
 }
 
@@ -138,19 +152,45 @@ function displayName(slug = "") {
 
 /* ---------- Pokédex: lista + ficha completa ---------- */
 
+/* Capturados (tracker del usuario, persistente en este navegador). */
+const CAUGHT_KEY = "frlg:caught:v1";
+
+function getCaught() {
+  try {
+    return new Set(JSON.parse(localStorage.getItem(CAUGHT_KEY) || "[]"));
+  } catch {
+    return new Set();
+  }
+}
+
+function toggleCaught(id) {
+  const caught = getCaught();
+  const key = Number(id);
+  if (caught.has(key)) caught.delete(key);
+  else caught.add(key);
+  try {
+    localStorage.setItem(CAUGHT_KEY, JSON.stringify([...caught]));
+  } catch { /* file:// u otros contextos sin almacenamiento */ }
+  return caught;
+}
+
 /* Lista estilo pokemon.com: arte oficial grande, nº, nombre, tipos y edición. */
-function dexListHTML(list, selectedId) {
+function dexListHTML(list, selectedId, caught) {
+  const done = caught || new Set();
   return list
     .map((p) => {
       const cur = p.id === selectedId;
+      const got = done.has(p.id);
       const ed = p.edition === "fire" ? "🔥" : p.edition === "leaf" ? "🍃" : "";
-      return `<li><button class="dex-card${cur ? " is-current" : ""}" data-dex="${p.id}"
-        ${cur ? 'aria-current="true"' : ""} aria-label="Ver ficha de ${displayName(p.slug)}">
-        <img src="${artworkUrl(p.id)}" alt="" loading="lazy" decoding="async" width="120" height="120" />
+      const name = displayName(p.slug);
+      return `<li class="dex-cell${got ? " is-caught" : ""}"><button class="dex-card${cur ? " is-current" : ""}" data-dex="${p.id}"
+        ${cur ? 'aria-current="true"' : ""} aria-label="Ver ficha de ${name}${got ? " (capturado)" : ""}">
+        <img src="${artworkUrl(p.id)}" alt="" loading="lazy" decoding="async" width="76" height="76" />
         <span class="dex-card-num">${dex(p.id)}</span>
-        <span class="dex-card-name">${displayName(p.slug)}${ed ? ` <span class="dex-item-ed">${ed}</span>` : ""}</span>
+        <span class="dex-card-name">${name}${ed ? ` <span class="dex-item-ed">${ed}</span>` : ""}</span>
         <span class="dex-card-types">${typeChips(p.types)}</span>
-      </button></li>`;
+      </button><button class="dex-ball${got ? " is-caught" : ""}" data-caught="${p.id}" aria-pressed="${got ? "true" : "false"}"
+        aria-label="Marcar a ${name} como capturado" title="${got ? "¡Capturado! Toca para liberar" : "Marcar como capturado"}">${ballInnerHTML()}</button></li>`;
     })
     .join("");
 }
@@ -170,7 +210,7 @@ function dexDetailHTML(p, evoTree, moves, locSection) {
     : p.edition === "leaf" ? "🍃 Verde Hoja (exclusivo)" : region;
   return `
     <header class="dex-head">
-      <img src="${artworkUrl(p.id)}" alt="Arte oficial de ${displayName(p.slug)}" width="140" height="140" />
+      <img src="${artworkUrl(p.id)}" alt="Arte oficial de ${displayName(p.slug)}" width="96" height="96" />
       <div>
         <p class="poke-dex" style="margin:0">${dex(p.id)} · ${edLabel}</p>
         <h3 class="dex-name">${displayName(p.slug)}</h3>
