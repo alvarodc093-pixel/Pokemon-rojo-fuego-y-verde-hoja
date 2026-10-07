@@ -208,21 +208,82 @@ a:hover { text-decoration-thickness: 2px; }
 }
 .dex-field input:focus, .dex-field select:focus { border-color: var(--color-accent-ink); outline: 3px solid rgb(42 74 155 / 0.25); }
 .dex-count { color: var(--color-muted); font-size: 0.95rem; margin: 10px 2px 0; }
-.dex-layout { display: grid; gap: var(--spacing-lg); margin-top: var(--spacing-lg); align-items: start; }
-.dex-list-wrap { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--spacing-md); box-shadow: var(--shadow-sm); min-width: 0; }
-.dex-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); max-height: 420px; overflow: auto; }
-.dex-card { display: grid; justify-items: center; gap: 2px; width: 100%; font: inherit; background: #fff; border: 2px solid var(--color-border); border-radius: var(--radius-md); padding: 12px 8px; cursor: pointer; transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease; }
-.dex-card img { width: 110px; height: 110px; object-fit: contain; transition: transform 0.15s ease; }
-.dex-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--color-accent-ink); }
+/* Layout sin scroll interno: la lista ocupa todo el ancho y la ficha es estrecha y fija.
+   Así los 251 se ven de un vistazo en una cuadrícula compacta, sin caja con scroll. */
+.dex-layout { display: grid; gap: var(--spacing-md); margin-top: var(--spacing-md); align-items: start; grid-template-columns: minmax(0, 1fr); }
+.dex-list-wrap { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 12px; box-shadow: var(--shadow-sm); min-width: 0; }
+.dex-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); max-height: none; overflow: visible; }
+.dex-card { display: grid; justify-items: center; gap: 1px; width: 100%; font: inherit; background: #fff; border: 2px solid var(--color-border); border-radius: 10px; padding: 8px 6px 9px; cursor: pointer; transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease; position: relative; }
+.dex-card img { width: 72px; height: 72px; object-fit: contain; transition: transform 0.15s ease; }
+.dex-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: var(--color-accent-ink); }
 .dex-card:hover img { transform: scale(1.07); }
 .dex-card.is-current { border-color: var(--color-fire); box-shadow: var(--shadow-md); }
-.dex-card-num { font-size: 0.78rem; font-weight: 800; color: var(--color-muted); letter-spacing: 1px; }
-.dex-card-name { font-weight: 800; font-size: 0.98rem; text-transform: capitalize; }
-.dex-card-types { display: flex; gap: 4px; flex-wrap: wrap; justify-content: center; }
-.dex-detail { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--spacing-lg); box-shadow: var(--shadow-sm); min-width: 0; }
-.dex-head { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
-.dex-head img { width: 140px; height: 140px; object-fit: contain; background: #f1f5f9; border-radius: var(--radius-md); }
-.dex-name { margin: 2px 0 6px; font-size: 1.6rem; text-transform: capitalize; }
+.dex-cell { position: relative; }
+.dex-cell.is-caught .dex-card { border-color: var(--color-leaf); background: linear-gradient(180deg, #fff 60%, #e7f7ee); }
+.dex-cell.is-caught .dex-card-name::after { content: " ✓"; color: var(--color-leaf-dark); font-weight: 900; }
+/* Pokéball de captura: visible en la esquina de cada recuadro, misma en Pokédex y ediciones. */
+.dex-ball,
+.poke-ball {
+  position: absolute; top: 6px; right: 6px; z-index: 2;
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 2px solid #111; padding: 0; cursor: pointer; line-height: 0;
+  background: #fff; overflow: hidden;
+  box-shadow: var(--shadow-sm); transition: transform 0.15s ease, filter 0.15s ease, box-shadow 0.15s ease;
+}
+.dex-ball .ball-half,
+.poke-ball .ball-half { position: absolute; left: 0; right: 0; height: 50%; }
+.dex-ball .ball-half--top,
+.poke-ball .ball-half--top { top: 0; background: #ee1c25; border-bottom: 1.5px solid #111; transition: transform 0.25s ease; }
+.dex-ball .ball-half--bottom,
+.poke-ball .ball-half--bottom { bottom: 0; background: #fff; transition: transform 0.25s ease; }
+.dex-ball .ball-center,
+.poke-ball .ball-center {
+  position: absolute; left: 50%; top: 50%; width: 11px; height: 11px; border-radius: 50%;
+  background: #fff; border: 2px solid #111; transform: translate(-50%, -50%); z-index: 2;
+  display: grid; place-items: center;
+}
+.dex-ball .ball-center > span,
+.poke-ball .ball-center > span { width: 4px; height: 4px; border-radius: 50%; background: #cbd5e1; display: block; transition: background 0.2s ease; }
+.dex-ball .ball-flash,
+.poke-ball .ball-flash { position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle, rgb(255 255 255 / 0.95) 0%, rgb(255 203 5 / 0.9) 45%, transparent 70%); opacity: 0; z-index: 3; pointer-events: none; }
+.dex-ball:hover, .poke-ball:hover { transform: scale(1.15); }
+.dex-ball:focus-visible, .poke-ball:focus-visible { outline: 3px solid var(--color-accent); outline-offset: 2px; }
+/* Sin capturar: apagada para invitar a tocarla */
+.dex-ball[aria-pressed="false"], .poke-ball[aria-pressed="false"] { filter: grayscale(1); opacity: 0.55; }
+.dex-ball[aria-pressed="false"]:hover, .poke-ball[aria-pressed="false"]:hover { filter: grayscale(0.3); opacity: 0.95; }
+/* Capturado: a todo color + halo dorado/verde */
+.dex-ball.is-caught, .poke-ball.is-caught { filter: none; opacity: 1; box-shadow: 0 0 0 3px var(--color-accent), var(--shadow-sm); }
+.dex-ball.is-caught .ball-center > span, .poke-ball.is-caught .ball-center > span { background: var(--color-leaf); }
+/* Animación de captura: meneo + apertura + destello */
+.dex-ball.catching, .poke-ball.catching { animation: ballShake 0.55s ease; }
+.dex-ball.catching .ball-half--top, .poke-ball.catching .ball-half--top { animation: ballOpenTop 0.55s ease; }
+.dex-ball.catching .ball-half--bottom, .poke-ball.catching .ball-half--bottom { animation: ballOpenBottom 0.55s ease; }
+.dex-ball.catching .ball-flash, .poke-ball.catching .ball-flash { animation: ballFlash 0.55s ease; }
+.dex-ball.just-caught, .poke-ball.just-caught { animation: ballPop 0.45s ease; }
+@keyframes ballShake {
+  0%, 100% { transform: rotate(0) scale(1); }
+  15% { transform: rotate(-20deg) scale(1.05); }
+  35% { transform: rotate(16deg) scale(1.08); }
+  55% { transform: rotate(-12deg) scale(1.1); }
+  75% { transform: rotate(8deg) scale(1.08); }
+  90% { transform: rotate(0) scale(1.12); }
+}
+@keyframes ballOpenTop { 0%, 55% { transform: translateY(0); } 70% { transform: translateY(-4px); } 100% { transform: translateY(0); } }
+@keyframes ballOpenBottom { 0%, 55% { transform: translateY(0); } 70% { transform: translateY(4px); } 100% { transform: translateY(0); } }
+@keyframes ballFlash { 0% { opacity: 0; transform: scale(0.4); } 55% { opacity: 0; } 70% { opacity: 1; transform: scale(1.1); } 100% { opacity: 0; transform: scale(1.6); } }
+@keyframes ballPop { 0% { transform: scale(1); } 40% { transform: scale(1.35); } 70% { transform: scale(0.94); } 100% { transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) {
+  .dex-ball.catching, .poke-ball.catching, .dex-ball.just-caught, .poke-ball.just-caught { animation: none; }
+  .dex-ball.catching .ball-flash, .poke-ball.catching .ball-flash { animation: none; opacity: 0; }
+}
+.dex-card-num { font-size: 0.7rem; font-weight: 800; color: var(--color-muted); letter-spacing: 1px; }
+.dex-card-name { font-weight: 800; font-size: 0.8rem; text-transform: capitalize; text-align: center; line-height: 1.2; min-height: 2.2em; display: flex; align-items: center; justify-content: center; }
+.dex-card-types { display: flex; gap: 3px; flex-wrap: wrap; justify-content: center; }
+.dex-card-types .type-chip { font-size: 0.6rem; padding: 1px 7px; }
+.dex-detail { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--spacing-md); box-shadow: var(--shadow-sm); min-width: 0; }
+.dex-head { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.dex-head img { width: 110px; height: 110px; object-fit: contain; background: #f1f5f9; border-radius: var(--radius-md); }
+.dex-name { margin: 2px 0 6px; font-size: 1.35rem; text-transform: capitalize; }
 .dex-sub { margin: 18px 0 8px; font-size: 1.1rem; }
 .evo-tree { display: flex; flex-wrap: wrap; gap: 10px; align-items: stretch; }
 .evo-node { display: grid; justify-items: center; gap: 2px; background: #f8fafc; border: 1.5px solid var(--color-border); border-radius: var(--radius-md); padding: 10px 14px; min-width: 110px; }
@@ -274,27 +335,37 @@ a:hover { text-decoration-thickness: 2px; }
 .panel-status { padding: 0 var(--spacing-lg); font-size: 0.92rem; color: var(--color-muted); }
 .panel-status:empty { display: none; }
 
-/* ---------- Cards ---------- */
+/* ---------- Cards (ediciones, mismo formato compacto que la Pokédex) ---------- */
 .card-grid {
-  list-style: none; margin: 0; padding: var(--spacing-lg);
-  display: grid; gap: 12px; grid-template-columns: repeat(2, 1fr);
+  list-style: none; margin: 0; padding: 12px;
+  display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
 }
 .poke-card {
-  border: 1px solid var(--color-border); border-radius: var(--radius-md);
+  border: 1px solid var(--color-border); border-radius: 10px;
   background: #fff; overflow: hidden; display: flex; flex-direction: column;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  position: relative;
 }
-.poke-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.poke-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.poke-card.is-caught { border-color: var(--color-leaf); border-width: 2px; box-shadow: 0 0 0 2px #bbf7d0; }
 .panel--fire .poke-card { background: linear-gradient(180deg, #fff 55%, #fff1f0); }
 .panel--leaf .poke-card { background: linear-gradient(180deg, #fff 55%, #ecfdf3); }
-.poke-media { background: radial-gradient(circle at 50% 35%, rgb(255 255 255 / 0.9), transparent 70%), #f1f5f9; padding: 10px; text-align: center; }
+.poke-media { background: radial-gradient(circle at 50% 35%, rgb(255 255 255 / 0.9), transparent 70%), #f1f5f9; padding: 10px 8px 6px; text-align: center; position: relative; }
 .panel--fire .poke-media { background: radial-gradient(circle at 50% 35%, #fff, transparent 70%), #ffe9e7; }
 .panel--leaf .poke-media { background: radial-gradient(circle at 50% 35%, #fff, transparent 70%), #ddf5e6; }
-.poke-media img { width: 96px; height: 96px; object-fit: contain; image-rendering: auto; }
-.poke-body { padding: 10px 12px 12px; display: grid; gap: 6px; }
-.poke-dex { font-size: 0.75rem; font-weight: 800; letter-spacing: 1px; color: var(--color-muted); }
-.poke-name { margin: 0; font-size: 1.02rem; text-transform: capitalize; line-height: 1.2; }
-.poke-types { display: flex; gap: 6px; flex-wrap: wrap; }
+.poke-media img { width: 76px; height: 76px; object-fit: contain; image-rendering: auto; }
+.caught-ribbon {
+  position: absolute; left: 6px; top: 6px; z-index: 2;
+  font-size: 0.62rem; font-weight: 900; letter-spacing: 0.4px;
+  background: var(--color-leaf); color: #fff; border-radius: 999px; padding: 2px 8px;
+  box-shadow: var(--shadow-sm);
+}
+.poke-body { padding: 8px 8px 10px; display: grid; gap: 4px; }
+.poke-dex { font-size: 0.7rem; font-weight: 800; letter-spacing: 1px; color: var(--color-muted); }
+.poke-name { margin: 0; font-size: 0.9rem; text-transform: capitalize; line-height: 1.2; min-height: 2.1em; }
+.poke-card.is-caught .poke-name::after { content: " ✓"; color: var(--color-leaf-dark); font-weight: 900; }
+.poke-types { display: flex; gap: 4px; flex-wrap: wrap; }
+.poke-types .type-chip { font-size: 0.62rem; padding: 2px 8px; }
 .type-chip {
   font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;
   padding: 3px 10px; border-radius: var(--radius-pill); background: #eef2ff; color: #334155;
@@ -319,8 +390,22 @@ a:hover { text-decoration-thickness: 2px; }
 .type-steel { background: #b7b7ce; border-color: #b7b7ce; color: #1f2937; }
 .type-fairy { background: #d685ad; border-color: #d685ad; color: #fff; }
 .poke-actions { display: flex; gap: 8px; margin-top: 2px; }
-.poke-actions .btn { flex: 1; padding: 8px 6px; font-size: 0.85rem; }
+.poke-actions .btn { flex: 1; padding: 7px 6px; font-size: 0.8rem; }
 .fav-btn[aria-pressed="true"] { background: #fff7cc; border: 1.5px solid var(--color-accent); color: #111; }
+/* Botón de captura en el modal, a juego con las balls de las tarjetas */
+.catch-btn { display: inline-flex; align-items: center; gap: 8px; }
+.catch-btn .mini-ball {
+  width: 20px; height: 20px; border-radius: 50%; flex: none;
+  border: 2px solid #111; display: inline-block;
+  background: linear-gradient(to bottom, #ee1c25 46%, #111 46%, #111 54%, #fff 54%);
+  position: relative;
+}
+.catch-btn .mini-ball::after {
+  content: ""; position: absolute; left: 50%; top: 50%; width: 6px; height: 6px;
+  border-radius: 50%; background: #fff; border: 1.5px solid #111; transform: translate(-50%, -50%);
+}
+.catch-btn[aria-pressed="true"] { background: #dcfce7; border: 1.5px solid var(--color-leaf); color: #14532d; }
+.catch-btn.catching { animation: ballShake 0.55s ease; }
 
 .skeleton {
   border-radius: var(--radius-md); min-height: 190px;
@@ -405,22 +490,30 @@ a:hover { text-decoration-thickness: 2px; }
   .nav-menu { display: flex; position: static; background: transparent; box-shadow: none; padding: 0; min-width: 0; gap: 2px; }
   .nav-menu a { color: #e2e8f0; padding: 8px 12px; }
   .nav-menu a:hover { background: rgb(255 255 255 / 0.12); color: #fff; }
-  .card-grid { grid-template-columns: repeat(3, 1fr); }
   .link-grid { grid-template-columns: repeat(2, 1fr); }
   .dex-toolbar { grid-template-columns: 2fr 1fr; align-items: end; }
+  .dex-list { grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); }
   .pokeball { width: 150px; height: 150px; }
   .pokeball-button { width: 36px; height: 36px; }
 }
 @media (min-width: 1024px) {
   .split { grid-template-columns: 1fr 1fr; align-items: start; }
-  .card-grid { grid-template-columns: repeat(3, 1fr); }
   .player-layout { grid-template-columns: 1.6fr 1fr; }
   .playlist { max-height: 480px; }
-  .dex-layout { grid-template-columns: 380px 1fr; }
-  .dex-list { max-height: 640px; }
-  .poke-media img { width: 110px; height: 110px; }
+  /* Tres zonas: la lista aprovecha el largo y la ficha queda corta y fija a la derecha */
+  .dex-layout { grid-template-columns: minmax(0, 1fr) 300px; }
+  .dex-list { grid-template-columns: repeat(auto-fill, minmax(108px, 1fr)); }
+  .dex-card img { width: 76px; height: 76px; }
+  .dex-detail { position: sticky; top: 64px; max-height: calc(100vh - 80px); overflow: auto; padding: 16px; }
+  .dex-head img { width: 96px; height: 96px; }
+  .dex-name { font-size: 1.25rem; }
+  .poke-media img { width: 80px; height: 80px; }
   .link-grid { grid-template-columns: repeat(3, 1fr); }
   .cutout-btn img { width: 54px; height: 54px; }
+}
+@media (min-width: 1400px) {
+  .dex-layout { grid-template-columns: minmax(0, 1fr) 320px; }
+  .dex-list { grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); }
 }
 @media (max-width: 639px) {
   .hero-split { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
