@@ -142,8 +142,9 @@ npx serve .
 - Pestañas Pokédex / Ediciones / Mapa / Guía / Recursos con teclado
   (flechas, inicio, fin), enlace profundo (`#mapa`, `#guia`…) y sin scroll infinito.
 - **Pokédex**: cuadrícula de los 251 con imagen, buscador y filtro
-  Kanto/Johto; al elegir uno, ficha con ubicación y %, evoluciones
-  (nivel/método) y ataques por nivel, MT/MO y tutor.
+  Kanto/Johto; cada tarjeta lleva su pokébola para marcar capturados
+  (se guardan en este navegador, con contador); al elegir uno, ficha con
+  ubicación y %, evoluciones (nivel/método) y ataques por nivel, MT/MO y tutor.
 - **Mapa**: FRLG Map de RankedBoost incrustado en la pestaña Mapa (con enlace
   alternativo si no carga).
 - **Guía en vídeo**: reproductor de YouTube incrustado + lista lateral de
