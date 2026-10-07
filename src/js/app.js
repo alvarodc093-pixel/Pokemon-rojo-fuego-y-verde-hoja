@@ -169,7 +169,7 @@ function markActive(id) {
   });
 }
 
-/* ---------- Cuadrículas y recortes: detalle + favoritos ---------- */
+/* ---------- Cuadrículas y recortes: detalle + captura ---------- */
 function initGridEvents() {
   for (const grid of [gridFire, gridLeaf]) {
     grid.addEventListener("click", onGridClick);
@@ -182,19 +182,90 @@ function initGridEvents() {
   }
 }
 
+/* Sincroniza todas las balls con el mismo id (Pokédex + ediciones + modal)
+   sin re-render completo, para que la animación de apertura se vea. */
+function syncCaughtUI(id, on) {
+  document.querySelectorAll(`button[data-caught="${id}"]`).forEach((b) => {
+    b.classList.remove("catching");
+    b.classList.toggle("is-caught", on);
+    b.setAttribute("aria-pressed", String(on));
+    b.title = on ? "¡Capturado! Toca para liberar" : "Marcar como capturado";
+    if (on) {
+      b.classList.add("just-caught");
+      setTimeout(() => b.classList.remove("just-caught"), 500);
+    }
+    const cell = b.closest(".dex-cell");
+    if (cell) cell.classList.toggle("is-caught", on);
+    const card = b.closest(".poke-card");
+    if (card) {
+      card.classList.toggle("is-caught", on);
+      let ribbon = card.querySelector(".caught-ribbon");
+      if (on && !ribbon) {
+        ribbon = document.createElement("span");
+        ribbon.className = "caught-ribbon";
+        ribbon.textContent = "✓ Capturado";
+        ribbon.setAttribute("aria-hidden", "true");
+        card.querySelector(".poke-media")?.appendChild(ribbon);
+      } else if (!on && ribbon) {
+        ribbon.remove();
+      }
+    }
+  });
+  document.querySelectorAll(`button[data-action="caught"][data-id="${id}"]`).forEach((b) => {
+    b.classList.remove("catching");
+    b.setAttribute("aria-pressed", String(on));
+    b.innerHTML = `<span class="mini-ball" aria-hidden="true"></span>${on ? "¡Capturado! ✓" : "Marcar capturado"}`;
+  });
+  updateCaughtCounts();
+}
+
+function updateCaughtCounts() {
+  const caught = getCaught();
+  const dexCount = $("#dexCount");
+  if (dexCount) {
+    const total = (typeof DEX_ALL !== "undefined" ? DEX_ALL.length : 251);
+    // Si hay filtro activo, muestra "visibles de total · X capturados"
+    const visible = document.querySelectorAll("#dexList .dex-cell").length || total;
+    dexCount.textContent = `${visible} de ${total} · ${caught.size} capturados`;
+  }
+  if (store.length) {
+    const fire = store.filter((p) => p.edition === "fire");
+    const leaf = store.filter((p) => p.edition === "leaf");
+    const fGot = fire.filter((p) => caught.has(p.id)).length;
+    const lGot = leaf.filter((p) => caught.has(p.id)).length;
+    if (statusFire) statusFire.textContent = `${fire.length} de ${FIRE_RED.length} en Rojo Fuego · ${fGot} capturados`;
+    if (statusLeaf) statusLeaf.textContent = `${leaf.length} de ${LEAF_GREEN.length} en Verde Hoja · ${lGot} capturados`;
+  }
+}
+
+/* Un toque = meneo + apertura + destello, luego se guarda el estado. */
+function handleCaughtClick(btn, id) {
+  if (!btn || btn.classList.contains("catching")) return;
+  btn.classList.add("catching");
+  const willCatch = !getCaught().has(id);
+  setTimeout(() => {
+    const caught = toggleCaught(id);
+    const on = caught.has(id);
+    syncCaughtUI(id, on);
+    toast(on ? `¡Atrapado! ${cap(nameOf(id))} registrado ✓` : `${cap(nameOf(id))} liberado`);
+  }, willCatch ? 560 : 250);
+}
+
 async function onGridClick(e) {
+  const ball = e.target.closest("button[data-caught]");
+  if (ball) {
+    e.stopPropagation();
+    handleCaughtClick(ball, Number(ball.dataset.caught));
+    return;
+  }
   const btn = e.target.closest("button[data-action]");
   if (!btn) return;
   const id = Number(btn.dataset.id);
-  if (btn.dataset.action === "fav") {
-    const favs = toggleFav(id);
-    const isFav = favs.has(id);
-    document.querySelectorAll(`button[data-action="fav"][data-id="${id}"]`).forEach((b) => {
-      b.setAttribute("aria-pressed", String(isFav));
-      if (b.classList.contains("fav-btn")) b.innerHTML = `★ ${isFav ? "Fav" : "Guardar"}`;
-    });
-    toast(isFav ? `${cap(nameOf(id))} guardado en favoritos ★` : `${cap(nameOf(id))} quitado de favoritos`);
-    renderEditions();
+  if (btn.dataset.action === "caught") {
+    handleCaughtClick(btn, id);
+  } else if (btn.dataset.action === "fav") {
+    // Compat: la estrella antigua ahora es captura.
+    handleCaughtClick(btn, id);
   } else if (btn.dataset.action === "detail") {
     await openModal(id);
   }
@@ -213,22 +284,21 @@ function paintSkeletons() {
   statusLeaf.textContent = "Cargando Pokémon desde PokéAPI…";
 }
 
-/* Render directo: los 45 exclusivos en sus dos cuadros, sin filtros. */
+/* Render directo: los 45 exclusivos en sus dos cuadros, mismo formato ball que la Pokédex. */
 function renderEditions() {
   if (!store.length) return;
-  const favs = getFavs();
+  const caught = getCaught();
   const fire = store.filter((p) => p.edition === "fire").sort((a, b) => a.id - b.id);
   const leaf = store.filter((p) => p.edition === "leaf").sort((a, b) => a.id - b.id);
 
-  gridFire.innerHTML = fire.map((p) => cardHTML(p, favs.has(p.id))).join("");
-  gridLeaf.innerHTML = leaf.map((p) => cardHTML(p, favs.has(p.id))).join("");
+  gridFire.innerHTML = fire.map((p) => cardHTML(p, caught.has(p.id))).join("");
+  gridLeaf.innerHTML = leaf.map((p) => cardHTML(p, caught.has(p.id))).join("");
 
   const allIds = new Set(store.map((p) => p.id));
   stripFire.innerHTML = stripHTML(fire, allIds);
   stripLeaf.innerHTML = stripHTML(leaf, allIds);
 
-  statusFire.textContent = `${fire.length} de ${FIRE_RED.length} en Rojo Fuego`;
-  statusLeaf.textContent = `${leaf.length} de ${LEAF_GREEN.length} en Verde Hoja`;
+  updateCaughtCounts();
   renderDexList();
 }
 
@@ -253,6 +323,12 @@ function dexEntry(id) {
 
 function initPokedex() {
   $("#dexList").addEventListener("click", (e) => {
+    const c = e.target.closest("button[data-caught]");
+    if (c) {
+      e.stopPropagation();
+      handleCaughtClick(c, Number(c.dataset.caught));
+      return;
+    }
     const b = e.target.closest("button[data-dex]");
     if (b) selectDex(Number(b.dataset.dex));
   });
@@ -278,8 +354,10 @@ function dexFiltered() {
 
 function renderDexList() {
   const list = dexFiltered();
-  $("#dexList").innerHTML = dexListHTML(list, selectedDexId);
-  $("#dexCount").textContent = `${list.length} de 251`;
+  const caught = getCaught();
+  $("#dexList").innerHTML = dexListHTML(list, selectedDexId, caught);
+  // Sin scroll interno: la lista fluye en la página, solo actualizamos el contador.
+  updateCaughtCounts();
   if (list.length && !list.some((p) => p.id === selectedDexId)) {
     selectDex(list[0].id, { scroll: false });
   }
@@ -357,11 +435,19 @@ function initModal() {
     if (e.key === "Escape" && !modalBackdrop.hidden) closeModal();
   });
   modalBody.addEventListener("click", (e) => {
-    const btn = e.target.closest('button[data-action="fav"]');
+    const btn = e.target.closest('button[data-action="caught"]');
     if (!btn) return;
-    const favs = toggleFav(Number(btn.dataset.id));
-    toast(favs.has(Number(btn.dataset.id)) ? "Guardado en favoritos ★" : "Quitado de favoritos");
-    renderEditions();
+    if (btn.classList.contains("catching")) return;
+    btn.classList.add("catching");
+    const id = Number(btn.dataset.id);
+    const willCatch = !getCaught().has(id);
+    setTimeout(() => {
+      const caught = toggleCaught(id);
+      const on = caught.has(id);
+      syncCaughtUI(id, on);
+      // Refresca el botón del modal (sync ya lo actualiza) + toast
+      toast(on ? `¡Atrapado! ${cap(nameOf(id))} registrado ✓` : `${cap(nameOf(id))} liberado`);
+    }, willCatch ? 560 : 250);
   });
 }
 
