@@ -1,5 +1,12 @@
 # Pokémon Rojo Fuego y Verde Hoja — Guía de ediciones (Switch 2)
 
+> 🌐 **Web en vivo:** <https://pokemon-rojo-fuego-verde-hojavercel.vercel.app/#pokedex>
+>
+> 👉 Entra directamente a la Pokédex online:
+> <https://pokemon-rojo-fuego-verde-hojavercel.vercel.app/#pokedex>
+>
+> [![Ver página online](https://img.shields.io/badge/🌐_Ver_página_online-pokemon--rojo--fuego--verde--hoja-blue?style=for-the-badge)](https://pokemon-rojo-fuego-verde-hojavercel.vercel.app/#pokedex)
+
 Guía web en español de las ediciones **Rojo Fuego** y **Verde Hoja** para Switch 2:
 qué Pokémon son **exclusivos de cada edición**, con datos en vivo,
 guía en vídeo y recursos oficiales. Sin frameworks, sin build: HTML + CSS + JS modular.

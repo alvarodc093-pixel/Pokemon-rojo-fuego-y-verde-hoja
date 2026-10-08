@@ -68,6 +68,26 @@ a:hover { text-decoration-thickness: 2px; }
 
 :focus-visible { outline: 3px solid var(--color-accent); outline-offset: 2px; border-radius: 4px; }
 
+/* ---------- Banner enlace página online ---------- */
+.live-banner {
+  background: linear-gradient(90deg, #0f172a, #1e3a8a);
+  color: #fff; font-size: 0.95rem;
+  border-bottom: 2px solid var(--color-accent);
+}
+.live-banner-inner {
+  display: flex; align-items: center; justify-content: center;
+  flex-wrap: wrap; gap: 8px 12px; padding-block: 10px; text-align: center;
+}
+.live-banner a { color: #ffe98a; font-weight: 700; overflow-wrap: anywhere; }
+.live-banner-actions { display: inline-flex; gap: 8px; }
+.live-btn {
+  display: inline-block; font: inherit; font-size: 0.85rem; font-weight: 800;
+  background: var(--color-accent); color: #111; border: 0; border-radius: 999px;
+  padding: 6px 14px; cursor: pointer; text-decoration: none;
+}
+.live-btn:hover { filter: brightness(1.08); }
+a.live-btn { color: #111; }
+
 /* ---------- Header ---------- */
 .site-header {
   position: sticky; top: 0; z-index: 50;

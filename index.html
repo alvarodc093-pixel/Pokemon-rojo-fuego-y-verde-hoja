@@ -9,6 +9,8 @@
   <meta property="og:title" content="Pokémon Rojo Fuego y Verde Hoja — Guía de ediciones" />
   <meta property="og:description" content="Mitad roja, mitad verde: consulta los Pokémon exclusivos de cada edición, filtra, guarda favoritos y aprende con vídeos." />
   <meta property="og:type" content="website" />
+  <link rel="canonical" href="https://pokemon-rojo-fuego-verde-hojavercel.vercel.app/#pokedex" />
+  <meta property="og:url" content="https://pokemon-rojo-fuego-verde-hojavercel.vercel.app/#pokedex" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%23ee1c25'/%3E%3Cpath d='M4 50a46 46 0 0 0 92 0z' fill='%23fff' transform='rotate(180 50 50)'/%3E%3Crect x='4' y='45' width='92' height='10' fill='%23111'/%3E%3Ccircle cx='50' cy='50' r='14' fill='%23fff' stroke='%23111' stroke-width='6'/%3E%3Ccircle cx='50' cy='50' r='6' fill='%23fff' stroke='%23111' stroke-width='3'/%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://pokeapi.co" crossorigin />
   <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin />
@@ -17,6 +19,19 @@
 </head>
 <body>
   <a class="skip-link" href="#contenido">Saltar al contenido principal</a>
+
+  <div class="live-banner" role="note" aria-label="Enlace a la página online">
+    <div class="container live-banner-inner">
+      <span aria-hidden="true">🌐</span>
+      <span><strong>Página online:</strong>
+        <a id="liveUrl" href="https://pokemon-rojo-fuego-verde-hojavercel.vercel.app/#pokedex">pokemon-rojo-fuego-verde-hojavercel.vercel.app/#pokedex</a>
+      </span>
+      <span class="live-banner-actions">
+        <a class="live-btn" href="https://pokemon-rojo-fuego-verde-hojavercel.vercel.app/#pokedex" target="_blank" rel="noopener">Abrir ↗</a>
+        <button class="live-btn" type="button" id="copyLiveUrl">Copiar enlace</button>
+      </span>
+    </div>
+  </div>
 
   <header class="site-header" id="top">
     <div class="container header-inner">
@@ -72,6 +87,8 @@
           <strong>exclusivos de cada edición</strong>, filtra por tipo, guarda favoritos y aprende con vídeos.
         </p>
         <p class="hero-source">
+          🌐 <strong>Página online:</strong>
+          <a href="https://pokemon-rojo-fuego-verde-hojavercel.vercel.app/#pokedex">pokemon-rojo-fuego-verde-hojavercel.vercel.app/#pokedex</a><br />
           Datos en vivo de <a href="https://pokeapi.co" target="_blank" rel="noopener">PokéAPI</a>
           · Lista verificada con <a href="https://rankedboost.com/pokemon/hypno/firered-leafgreen/#locations" target="_blank" rel="noopener">RankedBoost FRLG</a>
         </p>
@@ -244,6 +261,7 @@
 
   <footer class="site-footer">
     <div class="container footer-inner">
+      <p>🌐 <strong>Página online:</strong> <a href="https://pokemon-rojo-fuego-verde-hojavercel.vercel.app/#pokedex">https://pokemon-rojo-fuego-verde-hojavercel.vercel.app/#pokedex</a></p>
       <p><strong>Guía no oficial de fans.</strong> Pokémon © Nintendo / Game Freak / Creatures Inc. Sprites y datos vía <a href="https://pokeapi.co" target="_blank" rel="noopener">PokéAPI</a>.</p>
       <p><a href="#portada">Volver arriba ↑</a> · Hecha con HTML + CSS + JS modular, sin frameworks.</p>
     </div>
@@ -266,5 +284,28 @@
   <script src="src/js/ui.js"></script>
   <script src="src/js/playlist.js"></script>
   <script src="src/js/app.js"></script>
+  <script>
+    // Botón "Copiar enlace": copia la URL online al portapapeles.
+    (function () {
+      var btn = document.getElementById("copyLiveUrl");
+      if (!btn) return;
+      btn.addEventListener("click", function () {
+        var url = "https://pokemon-rojo-fuego-verde-hojavercel.vercel.app/#pokedex";
+        function done(msg) {
+          btn.textContent = msg;
+          setTimeout(function () { btn.textContent = "Copiar enlace"; }, 2000);
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(function () { done("¡Copiado! ✓"); }, function () { done(url); });
+        } else {
+          var t = document.createElement("textarea");
+          t.value = url; document.body.appendChild(t); t.select();
+          try { document.execCommand("copy"); done("¡Copiado! ✓"); }
+          catch (e) { done(url); }
+          document.body.removeChild(t);
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
